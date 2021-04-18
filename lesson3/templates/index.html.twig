@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Catalog</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://kit.fontawesome.com/a03bfa2223.js" crossorigin="anonymous"></script>
+
+</head>
+<body>
+  <header class="header">
+  {% if isLogged %}
+    <div class="greeting">
+      {% if isAdmin %}
+        <a class="sign-in" href="admin/admin.php"> Admin </a>
+      {% endif %}
+      <h4 > Hello {{ name }} </h4>
+      <a class="sign-in" href="signOut.php">Sign Out</a>
+    </div>
+  {% else %}
+    <div class="sign-in__links">
+      <form method="POST">
+        <label for="userLogin ">Login: </label>
+        <input type="text" id="userLogin" name="userLogin" required>
+        <label for="password">Password: </label>
+        <input type="password" id="password" name="password" required>
+        <input class="submit-btn" type="submit" value="Sign in">
+      </form>
+      <a class="sign-in" href="registration.php">Registration</a>
+    </div>
+  {% endif %}
+  </header>
+  <h2 class="heading">Catalog</h2>
+  <a class="catalog__cart-link" href="cart.php"><h3 class="catalog__h3"> Cart</h3></a>
+  <section class="section">
+    <div class="products">
+      {% for product in products %}
+        <div class="catalog__product">
+          <a class="catalog__link" href="counter.php?productId={{ product.id }}" >
+            <div class="catalog__wrapper">
+              <img class="catalog__image" id="{{ product.id }}" src="{{ product.url }}" alt="product-{{ product.id }}">
+            </div>
+            <p class="catalog__title"><b>{{ product.title }}</b></p>
+            <p class="catalog__price">Price: {{ product.price }} &#8381;</p>
+          </a>
+          <a class="add-to-cart-link" href="Functions/addToCart.php?productId={{ product.id }}">
+            <i class="fas fa-cart-plus"></i> Add to cart
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+</body>
+</html>
+
