@@ -1,6 +1,6 @@
 lesson0.php
-lesson3/vendor/
-lesson3/composer.lock
+*/vendor/
+*/composer.lock
 lesson3/show3.php
 *.zip
 lesson3/images
