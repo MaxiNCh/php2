@@ -10,10 +10,10 @@ ini_set('display_startup_errors', '1');
 class DB
 {
     const DB_TYPE = 'mysql';
-    const DB_HOST = '127.0.0.1:8889';
+    const DB_HOST = 'localhost:3306';
     const DB_NAME = 'geekbrains';
     const DB_USER = 'root';
-    const DB_PASS = 'root';
+    const DB_PASS = 'MyNewPass';
 
     public static function getDbConnection() : PDO
     {

@@ -3,7 +3,9 @@
 namespace Geekbrains\User\Controller;
 
 use Geekbrains\Core\Controller\AbstractController;
+use Geekbrains\User\View\Authorization;
 use Geekbrains\User\View\Message;
+use Geekbrains\User\View\Profile;
 use Geekbrains\User\Model\User as UserModel;
 use Geekbrains\User\View\User as UserView;
 
@@ -11,7 +13,50 @@ class User extends AbstractController
 {
     public function indexAction()
     {
-        echo "Hello!";
+        session_start();
+        if (isset($_SESSION['login'])) {
+            header('Location: ../profile/');
+        } else {
+            $view = new Authorization();
+            $view->show();
+        }
+    }
+
+    public function authorizationAction()
+    {
+        session_start();
+        $user = new UserModel();
+        if (isset($_POST['login'])
+            && isset($_POST['password'])
+            && $user->authorizeUser($_POST['login'], $_POST['password'])
+        ) {
+            $_SESSION['login'] = $user->getData('login');
+            header('Location: ../profile/');
+
+        } else {
+            echo 'Login or password is invalid';
+        }
+    }
+
+    public function profileAction()
+    {
+        session_start();
+        $user = new UserModel();
+        $view = new Profile();
+        $userData = $user->getByLogin($_SESSION['login'])->getData();
+        $view->setData(['userData' => [
+            'Name' => $userData['name'],
+            'Login' => $userData['login'],
+            'Email' => $userData['email'],
+            'Admin rights' => $userData['admin'] === 1 ? 'Yes' : 'No'
+        ]])->show();
+    }
+
+    public function signOutAction()
+    {
+        session_start();
+        unset($_SESSION['login']);
+        header('Location: ../index/');
     }
 
     public function showNameAction()

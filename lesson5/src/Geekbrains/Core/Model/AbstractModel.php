@@ -24,6 +24,15 @@ abstract class AbstractModel
         return $this;
     }
 
+    public function getByLogin(string $login) : self
+    {
+        $stm = $this->db->prepare("SELECT * FROM {$this->tableName} WHERE login = ?");
+        $stm->bindValue(1, $login);
+        $stm->execute();
+        $this->params = $stm->fetch();
+        return $this;
+    }
+
     public function getByAttribute(array $columnToValue) : self
     {
         if (count($columnToValue) < 1) {
