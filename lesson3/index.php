@@ -15,23 +15,18 @@ try {
   $isLogged = isset($_SESSION['login']);
   $isAdmin = isset($_SESSION['admin']);
   
-  $products = [];
+  
   $name = null;
   if ($isLogged) {
   	$name = $_SESSION['name'];
   }
 
-  $dbh = new PDO('mysql:dbname=geekbrains;host=localhost:3306', 'root', 'MyNewPass');
-  $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-  $selectProducts = 'SELECT * FROM products ORDER BY counter_clicks DESC';
-  $sth = $dbh->query($selectProducts);
+  $countSelect = "SELECT count(*) as `count` FROM products";
+  $sth = $pdo->query($countSelect);
+  $row = $sth->fetch(PDO::FETCH_ASSOC);
+  $numberPages = ceil($row['count'] / ROWS_NUM);
 
-  while ($product = $sth->fetchObject()) {
-    $product->url = $DIR . $product->name; 
-  	$products[] = $product;
-  }
-
-  if (empty($products)) {
+  if (empty($numberPages)) {
     throw new MyException('Нет продуктов в БД');
   }
 
@@ -41,7 +36,7 @@ try {
   	'isLogged' => $isLogged,
   	'isAdmin' => $isAdmin,
   	'name' => $name,
-  	'products' => $products
+  	'numberPages' => $numberPages
   ]);
 
 } catch (PDOException $e) {

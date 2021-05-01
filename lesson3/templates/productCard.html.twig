@@ -1,0 +1,14 @@
+{% for product in products %}
+  <div class="catalog__product">
+    <a class="catalog__link" href="counter.php?productId={{ product.id }}" >
+      <div class="catalog__wrapper">
+        <img class="catalog__image" id="{{ product.id }}" src="{{ product.url }}" alt="product-{{ product.id }}">
+      </div>
+      <p class="catalog__title"><b>{{ product.title }}</b></p>
+      <p class="catalog__price">Price: {{ product.price }} &#8381;</p>
+    </a>
+    <a class="add-to-cart-link" href="Functions/addToCart.php?productId={{ product.id }}">
+      <i class="fas fa-cart-plus"></i> Add to cart
+    </a>
+  </div>
+{% endfor %}

@@ -31,26 +31,74 @@
     </div>
   {% endif %}
   </header>
+
   <h2 class="heading">Catalog</h2>
   <a class="catalog__cart-link" href="cart.php"><h3 class="catalog__h3"> Cart</h3></a>
+
   <section class="section">
     <div class="products">
-      {% for product in products %}
-        <div class="catalog__product">
-          <a class="catalog__link" href="counter.php?productId={{ product.id }}" >
-            <div class="catalog__wrapper">
-              <img class="catalog__image" id="{{ product.id }}" src="{{ product.url }}" alt="product-{{ product.id }}">
-            </div>
-            <p class="catalog__title"><b>{{ product.title }}</b></p>
-            <p class="catalog__price">Price: {{ product.price }} &#8381;</p>
-          </a>
-          <a class="add-to-cart-link" href="Functions/addToCart.php?productId={{ product.id }}">
-            <i class="fas fa-cart-plus"></i> Add to cart
-          </a>
-        </div>
-      {% endfor %}
+
+    </div>
+    <div class="pagination">
+      <a id="previous" href="#"><< </a>
+      <span id="pages"></span>
+      <a id="next" href="#"> >></a>
     </div>
   </section>
+
+  <script type="text/javascript">
+    const productsEl = document.querySelector('.products');
+    const nextBtn = document.querySelector('#next');
+    const previousBtn = document.querySelector('#previous');
+    const pages = document.querySelector('#pages');
+    const formData = new FormData();
+
+    let currentPage = 1;
+    formData.append('page', currentPage);
+
+    function setPages(page) {
+      pages.innerText = `стр. ${ page } из {{ numberPages }} `;
+    }
+
+    setPages(currentPage);
+
+    function fetchProducts() { 
+      fetch('./functions/fetchProducts.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Problem to fetch data');
+        }
+        return response.text();
+      })
+      .then(data => productsEl.innerHTML = data);
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchProducts();
+    })
+
+    nextBtn.addEventListener('click', () => {
+      if (currentPage < {{ numberPages }}) {
+        currentPage++;
+        formData.set('page', currentPage);
+        fetchProducts();
+        setPages(currentPage);
+      } 
+    })
+
+     previousBtn.addEventListener('click', () => {
+      if (currentPage > 1) {
+        currentPage--;
+        formData.set('page', currentPage);
+        fetchProducts();
+        setPages(currentPage);
+      } 
+    })
+
+  </script>
 </body>
 </html>
 
