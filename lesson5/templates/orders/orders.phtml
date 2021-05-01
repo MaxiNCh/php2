@@ -1,0 +1,87 @@
+<html>
+
+<head>
+  <title>Orders</title>
+  <link rel="stylesheet" href="/php2/lesson5/css/style.css">
+</head>
+
+<body>
+  {% include 'header.phtml' %}
+  <section>
+    <h3>Orders</h3>
+      <table>
+        <th>#</th>
+        <th>Order ID</th>
+        <th>User name</th>
+        <th>Address</th>
+        <th>Phone</th>
+        <th>Date of order</th>
+        <th>Status</th>
+        {% for item in orders %}
+          <tr>
+            <th>{{ item.num }}</th>
+            <th>{{ item['order id'] }}</th>
+            <th>{{ item.name }}</th>
+            <th>{{ item.address }}</th>
+            <th>{{ item.phone }}</th>
+            <th>{{ item.date }}</th>
+            <th>
+              <select
+                id="select-{{ item.num - 1 }}"
+                name="orderStatus"
+                data-id={{ item['order id'] }}
+                >
+                <option value="delivered">Delivered</option>
+                <option value="new">New</option>
+                <option value="ordered">Ordered</option>
+              </select>
+            </th>
+          </tr>
+        {% endfor %}
+      </table>
+  </section>
+  {% include 'footer.phtml' %}
+
+  <script type="text/javascript">
+  const orders = {{ orders|json_encode|raw }} ;
+  for (let i = 0; i < orders.length; i++) {
+    const options = document.querySelector(`#select-${i}`);
+    switch (orders[i].status.trim()) {
+      case ('new'):
+        options.value = 'new';
+        break;
+      case ('delivered'):
+        options.value = 'delivered';
+        break;
+      case ('ordered'):
+        options.value = 'ordered';
+        break;
+      default:
+        options.value = '';
+        break;
+    }
+    options.addEventListener('change', (e) => {
+      setStatus(options.dataset.id, e.target.value);
+    })
+  }
+
+  function setStatus(orderId, newStatus) {
+    const formData = new FormData();
+    formData.set('id', orderId);
+    formData.set('status', newStatus);
+    
+    fetch('/php2/lesson5/order/orders/set-status/', {
+      method: 'POST',
+      body: formData
+    })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Problem to set status');
+      }
+    })
+  }
+
+  </script>
+</body>
+
+</html>
