@@ -41,15 +41,19 @@ class User extends AbstractController
     public function profileAction()
     {
         session_start();
-        $user = new UserModel();
-        $view = new Profile();
-        $userData = $user->getByLogin($_SESSION['login'])->getData();
-        $view->setData(['userData' => [
-            'Name' => $userData['name'],
-            'Login' => $userData['login'],
-            'Email' => $userData['email'],
-            'Admin rights' => $userData['admin'] === 1 ? 'Yes' : 'No'
-        ]])->show();
+        if (isset($_SESSION['login'])) {
+            $user = new UserModel();
+            $view = new Profile();
+            $userData = $user->getByLogin($_SESSION['login'])->getData();
+            $view->setData(['userData' => [
+                'Name' => $userData['name'],
+                'Login' => $userData['login'],
+                'Email' => $userData['email'],
+                'Admin rights' => $userData['admin'] === '1' ? 'Yes' : 'No'
+            ]])->show();
+        } else {
+            header('Location: ../index/');
+        }
     }
 
     public function signOutAction()
