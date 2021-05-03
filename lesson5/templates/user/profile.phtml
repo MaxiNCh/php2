@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <title>My Profile</title>
+    <link rel="stylesheet" href="/php2/lesson5/css/style.css">
+  </head>
+  <body>
+    {% include 'header.phtml' %}
+    <section>
+      <h3>My Profile</h3>
+      <ul>
+        {% for key, data in userData %}
+          <li><strong>{{ key }}:</strong> {{ data|e }} </li>
+        {% endfor %}
+      </ul>
+      {% if userData['Admin rights'] == 'Yes' %}
+        <a href="../../../order/orders/orders/">Заказы</a>
+      {% endif %}
+      <br><br>
+      <a href="../sign-out/">Выйти</a>
+    </section>
+    {% include 'footer.phtml' %}
+
+    <script type="text/javascript">
+    </script>
+  </body>
+</html>
