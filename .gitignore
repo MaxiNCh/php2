@@ -3,4 +3,5 @@ lesson0.php
 */composer.lock
 lesson3/show3.php
 *.zip
-lesson3/images
+*/images/
+*/.idea/

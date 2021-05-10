@@ -10,7 +10,7 @@ $router = new \Geekbrains\Core\Router();
 
 // Add the routes
 $router->add('', ['namespace' => 'User', 'controller' => 'User', 'action' => 'index']);
-$router->add('{controller}/{action}', ['namespace' => 'User']);
+$router->add('{namespace}/{controller}/{action}');
 
 if (!empty($_GET['path'])) {
     $router->dispatch($_GET['path']);
