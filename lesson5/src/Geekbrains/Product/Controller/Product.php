@@ -7,12 +7,23 @@ use Geekbrains\Product\View\SingleProduct as ProductView;
 use Geekbrains\Core\Controller\AbstractController;
 
 /**
+ * 
+ */
+class NoIdException extends \Exception
+{
+  
+  function __construct($message)
+  {
+    parent::__construct($message);
+  }
+}
+/**
  *  
  */
 class Product extends AbstractController
 {
   
-  public function productAction()
+  public function productAction() : void
   {
     if (isset($_GET['id'])) {
       $id = $_GET['id'];
@@ -23,7 +34,7 @@ class Product extends AbstractController
       $view->setData(['product' => $product])->show();
 
     } else {
-      throw new Exception("ID of product was not specified", 1);
+      throw new NoIdException("ID of product was not specified");
       
     }
   }

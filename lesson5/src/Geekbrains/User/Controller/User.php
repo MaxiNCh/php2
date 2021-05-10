@@ -15,7 +15,7 @@ class User extends AbstractController
     {
         session_start();
         if (isset($_SESSION['login'])) {
-            header('Location: ../profile/');
+            header("Location: /php2/lesson5/user/user/profile/");
         } else {
             $view = new Authorization();
             $view->show();
@@ -31,7 +31,7 @@ class User extends AbstractController
             && $user->authorizeUser($_POST['login'], $_POST['password'])
         ) {
             $_SESSION['login'] = $user->getData('login');
-            header('Location: ../profile/');
+            header('Location: /php2/lesson5/user/user/profile/');
 
         } else {
             echo 'Login or password is invalid';
@@ -52,7 +52,7 @@ class User extends AbstractController
                 'Admin rights' => $userData['admin'] === '1' ? 'Yes' : 'No'
             ]])->show();
         } else {
-            header('Location: ../index/');
+            header('Location: /php2/lesson5/user/user/index/');
         }
     }
 
@@ -60,7 +60,7 @@ class User extends AbstractController
     {
         session_start();
         unset($_SESSION['login']);
-        header('Location: ../index/');
+        header('Location: /php2/lesson5/user/user/index/');
     }
 
     public function showNameAction()

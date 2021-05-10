@@ -9,20 +9,24 @@
 <body>
   {% include 'header.phtml' %}
   <section class="product">
-    <img class='product-img' src="{{ product.url }}" alt="{{ product.name }}">
-    <div class='product-body'>
-      <p class='product-text'><b> {{ product.title }} </b></p>
-      <p class='product-text'> Price: {{ product.price }} &#8381;</p>
-      <p class='product-text'> Популярность: {{ product.counter_clicks }} </p>
-    </div>
-    <div class="cart__links">
-      <a class='add-to-cart-link' href="#">
-        <i class='fas fa-cart-plus'></i> Add to cart
-      </a>
-      <a class='del-from-cart-link' href="#">
-        <i class="fas fa-trash"></i> Delete from cart
-      </a>
-    </div>
+    {% if product.id is defined %}
+      <img class='product-img' src="{{ product.url }}" alt="{{ product.name }}">
+      <div class='product-body'>
+        <p class='product-text'><b> {{ product.title }} </b></p>
+        <p class='product-text'> Price: {{ product.price }} &#8381;</p>
+        <p class='product-text'> Популярность: {{ product.counter_clicks }} </p>
+      </div>
+      <div class="cart__links">
+        <a class='add-to-cart-link' href="#">
+          <i class='fas fa-cart-plus'></i> Add to cart
+        </a>
+        <a class='del-from-cart-link' href="#">
+          <i class="fas fa-trash"></i> Delete from cart
+        </a>
+      </div>
+    {% else %}
+      <p>There is no such product</p>
+    {% endif %}
   </section>
   {% include 'footer.phtml' %}
 
